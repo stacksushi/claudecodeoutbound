@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Secret and client-data scan. Prints file and reason only, never the matched text.
 Usage: python3 tools/scan.py --staged | --all
-Optional inputs (never committed):
-  DENYLIST  path to a file of client/agency names, one per line (default: ../outbound-private/.release-denylist if present)
-  ENV_FILE  path to a .env whose key values must never appear in files (default: ../outbound-private/.env if present)
+Optional inputs (never committed), auto-found as ../outbound-private/<file> or ../<file> (submodule layout):
+  DENYLIST  file of client/agency names, one per line (.release-denylist)
+  ENV_FILE  a .env whose key values must never appear in files
 """
 import os, re, subprocess, sys
 
@@ -26,8 +26,11 @@ def load_lines(path):
         return [l.strip() for l in open(path, errors="ignore") if l.strip() and not l.startswith("#")]
     return []
 
-denylist_path = os.environ.get("DENYLIST") or os.path.join("..", "outbound-private", ".release-denylist")
-env_path = os.environ.get("ENV_FILE") or os.path.join("..", "outbound-private", ".env")
+def first_existing(*cands):
+    return next((c for c in cands if c and os.path.exists(c)), None)
+# works as a sibling clone (../outbound-private/) and as the private repo's submodule (../)
+denylist_path = first_existing(os.environ.get("DENYLIST"), os.path.join("..", "outbound-private", ".release-denylist"), os.path.join("..", ".release-denylist"))
+env_path = first_existing(os.environ.get("ENV_FILE"), os.path.join("..", "outbound-private", ".env"), os.path.join("..", ".env"))
 deny = [d.lower() for d in load_lines(denylist_path)]
 env_vals = set()
 for l in load_lines(env_path):
