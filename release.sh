@@ -21,7 +21,8 @@ assert m and m.group(1).strip().strip('"') == d, f"bad frontmatter: {sys.argv[1]
 PY
 done
 echo "== level 1: offline tests"
-node --experimental-strip-types --no-warnings --test skills/email-verification/tests/verify-routing.test.ts | grep -E "^ℹ (pass|fail)"
+if ! out=$(NO_COLOR=1 FORCE_COLOR=0 node --experimental-strip-types --no-warnings --test skills/email-verification/tests/verify-routing.test.ts 2>&1); then echo "$out"; echo "offline tests FAILED"; exit 1; fi
+echo "$out" | sed 's/\x1b\[[0-9;]*m//g' | grep -E "(pass|fail) [0-9]+" || true
 bash tests/selftest.sh
 bash tests/scan_selftest.sh
 echo "check passed"
