@@ -29,8 +29,8 @@ echo "check passed"
 case "$cmd" in
   check) ;;
   zip)
-    rm -f ../claude-code-outbound.zip
-    git ls-files | grep -v '^\.githooks/' | zip -q ../claude-code-outbound.zip -@ && echo "built ../claude-code-outbound.zip from tracked files only" ;;
+    mkdir -p dist && rm -f dist/claude-code-outbound.zip
+    git ls-files | grep -v '^\.githooks/' | zip -q dist/claude-code-outbound.zip -@ && echo "built dist/claude-code-outbound.zip from tracked files only" ;;
   tag)
     v="${2:?usage: ./release.sh tag X.Y.Z}"
     [ -z "$(git status --porcelain)" ] || { echo "working tree not clean: commit first"; exit 1; }
