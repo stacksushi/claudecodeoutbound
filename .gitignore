@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+profiles/
+**/search-results.json
+**/enriched.csv
+**/verified.csv
+**/leads*.csv
+**/checkpoints/
+.DS_Store
+__pycache__/
+node_modules/

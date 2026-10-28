@@ -1,0 +1,38 @@
+# One ICP per profile. Copy to profiles/<client>-<segment>/client-profile.yaml (the profiles/ folder is git-ignored).
+business:
+  name: Example Co
+  website: https://example.com
+  one_liner: What the client sells in one sentence
+  tone: peer-to-peer
+icp_segment: example_segment            # ONE segment only
+offer:
+  primary_cta: What you ask the lead to do
+  lead_magnet: The free thing you offer (no "free" or "no cost" in copy; both are on the spam list)
+  value_prop: One sentence
+decision_makers: [Founder, CEO]         # this segment's buyers only
+icp_hard_filters:
+  industries_in: []
+  headcount_min: 1
+  headcount_max: 200
+  countries: [US]
+  excluded_domains: []
+icp_soft_preferences:
+  triggers: []
+messaging:
+  angle: ""
+  proof: []                             # every claim must trace to the client's own materials
+  pains: []
+sender_identity:                        # emails are ALWAYS written and signed as the client
+  name: Client Person
+  title: Founder
+  company: Example Co
+  signature_spin: |
+    {Client Person|C. Person|Client}{, Founder|}
+    {Example Co|Example}
+verification:                           # asked once, saved here
+  primary: millionverifier              # millionverifier | reoon
+  secondary: no2bounce                  # no2bounce | none (none = risky addresses held for review)
+style:
+  body_case: sentence case (subjects lowercase)
+legal:
+  banned_words: []
